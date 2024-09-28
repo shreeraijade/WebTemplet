@@ -1,0 +1,112 @@
+/* Container styling */
+.vendor-container {
+    width: 80%;
+    margin: 20px auto;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .vendor-body{
+    width: 100%;
+    min-height: 80vh;
+    margin-bottom: 20px;
+  }
+  
+  .vendor-item {
+    display: flex;
+    padding: 15px;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    align-items: center;
+  }
+  
+  .profile-photo {
+    margin-right: 15px;
+  }
+  
+  .vendor-details {
+    flex: 1;
+  }
+  
+  .vendor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .vendor-name {
+    margin: 0;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .vendor-address,
+  .vendor-email {
+    margin: 5px 0;
+    color: #666;
+  }
+  
+  .badge {
+    padding: 2px 8px;
+    color: #fff;
+    border-radius: 4px;
+    font-size: 10px;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+  
+  .paper {
+    background-color: #f44336;
+  }
+  
+  .e-waste {
+    background-color: #ff9800;
+  }
+  
+  .plastic {
+    background-color: #03a9f4;
+  }
+  
+  .metal {
+    background-color: #9c27b0;
+  }
+  
+  .bio {
+    background-color: #4caf50;
+  }
+  
+  .action-buttons {
+    margin-top: 10px;
+  }
+  
+  .accept-btn {
+    padding: 5px 10px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+  
+  .reject-btn {
+    padding: 5px 10px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .accept-btn:hover {
+    background-color: #388e3c;
+  }
+  
+  .reject-btn:hover {
+    background-color: #d32f2f;
+  }
+  

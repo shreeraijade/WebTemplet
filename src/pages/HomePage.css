@@ -7,12 +7,84 @@
 
 .Home-section{
     width: inherit;
-    height: 100vh;
+    height:85vh;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
-    border-bottom: 1px solid black;
+    box-shadow: 0 -6px 16px rgba(0, 0, 0, 0.1);
+}
+
+
+
+.homesec{
+    height: 100%;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   
+}
+
+.info{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding-left: 80px;
+    
+}
+
+.info span{
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+
+
+.explore-button{
+    background-color: #f56a58;
+    color: white;
+    padding: 10px;
+    border: none;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.tag{
+    font-size: 30px;
+    color: #f56a58;;
+}
+  
+
+.boy-image{
+    background-image: url("C:\Users\Shreyas\OneDrive\Desktop\WasteWelll\WebTemplet\public\Screenshot_2024-09-26_115039-removebg-preview.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+   
+    height: 400px;
+    width: 400px;
+}
+
+.boy-image2{
+    background-image: url("/public/vendor.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    
+    height: 400px;
+    width: 300px;
+}
+
+  
+
+
+.machine-image{
+    background-image: url("C:\Users\Shreyas\OneDrive\Desktop\WasteWelll\WebTemplet\public\Screenshot_2024-09-26_115616-removebg-preview.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+   
+    height: 270px;
+    width: 600px;
 }
 
 

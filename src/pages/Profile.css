@@ -102,12 +102,13 @@ p {
 }
 
 .chat-button {
-    background-color: #4CAF50;
+    background-color: #f56a58;
     color: white;
     border: none;
     padding: 10px 20px;
     cursor: pointer;
     border-radius: 5px;
+    margin: 10px;
 }
 
 .extra-info{

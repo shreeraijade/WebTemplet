@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './Profile.css'
+import { AuthContext } from '../contexts/AuthContext';
 
 const Profile = () => {
+
+
+    const {logout} = useContext(AuthContext);
   return (
     <div className='profile-body'>
 
@@ -39,7 +43,8 @@ const Profile = () => {
                 <div class="rating">
                     <p>4.5 <span>★</span> (133 reviews)</p>
                 </div>
-                <button class="chat-button">Chat</button>
+                <button class="chat-button">Edit</button>
+                <button class="chat-button" onClick={()=>{ logout() }}>Logout</button>
             </div>
 
         <div class="cards-container">

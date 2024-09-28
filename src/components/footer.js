@@ -6,8 +6,8 @@ function footer() {
     <div>
       <footer class="footer">
   <div class="footer-logo">
-    <h2>Shreyas Raijade</h2>
-    <p>Innovating for a Better Tomorrow</p>
+    <h2>WasteWell</h2>
+    <p>Together for a Greener Future!</p>
   </div>
   <div class="footer-links">
     <div>

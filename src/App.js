@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { AuthProvider, AuthContext } from './contexts/AuthContext';
 import Navbar from './components/navbar';
@@ -14,9 +14,17 @@ import NotificationPage from './pages/noti';
 import VendorsList from './components/vendorList';
 import RequestForm from './pages/requestform';
 import Options from './components/options';
+import Blog from './pages/blog';
 
 const App = () => {
+  let vendorArray = localStorage.getItem('vendorList')
+  console.log(JSON.parse(vendorArray));
+  const [vendorList, setVendorList] = useState(JSON.parse(vendorArray));
+
+  // const { isLoggedIn } = useContext(AuthContext)
   return (
+  
+
     <AuthProvider>
       <Router>
         <Navbar />
@@ -24,7 +32,7 @@ const App = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<Login />} />
           <Route path='/signUp' element={<SignUp/>}/>
-          <Route path="/dashboard" element={
+          <Route path="/leaderboard" element={
             <AuthContext.Consumer>
               {({ isLoggedIn }) => isLoggedIn ? <Dashboard /> : <Navigate to="/login" />}
             </AuthContext.Consumer>
@@ -36,7 +44,7 @@ const App = () => {
           } />
           <Route path="/waste" element={
             <AuthContext.Consumer>
-              {({ isLoggedIn }) => isLoggedIn ? <Waste /> : <Navigate to="/login" />}
+              {({ isLoggedIn }) => isLoggedIn ? <Waste vendorList={vendorList} setVendorList={setVendorList}/> : <Navigate to="/login" />}
             </AuthContext.Consumer>
           } />
           <Route path="/stats" element={
@@ -53,13 +61,19 @@ const App = () => {
 
           <Route path="/waste/vendors/:wasteType" element={
             <AuthContext.Consumer>
-              {({ isLoggedIn }) => isLoggedIn ? <VendorsList /> : <Navigate to="/login" />}
+              {({ isLoggedIn }) => isLoggedIn ? <VendorsList vendorList={vendorList} setVendorList={setVendorList}/> : <Navigate to="/login" />}
             </AuthContext.Consumer>
           }  />
 
-          <Route path="/waste/vendors/request" element={
+          <Route path="/waste/vendors/request/:wasteTypeNo" element={
             <AuthContext.Consumer>
               {({ isLoggedIn }) => isLoggedIn ? <RequestForm /> : <Navigate to="/login" />}
+            </AuthContext.Consumer>
+          }  />
+
+          <Route path="/blogs" element={
+            <AuthContext.Consumer>
+              {({ isLoggedIn }) => isLoggedIn ? <Blog /> : <Navigate to="/login" />}
             </AuthContext.Consumer>
           }  />
 

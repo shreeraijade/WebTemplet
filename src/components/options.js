@@ -30,7 +30,7 @@ const OptionBody = () => {
         user.button=="up"? navigate("/signup") : navigate("/login")
        }}>
         <span>Seller</span>
-        <div className='vendor-img'></div>
+        <div className='vendour-img'></div>
       </div>
     </div> 
     </div>

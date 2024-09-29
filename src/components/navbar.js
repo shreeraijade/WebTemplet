@@ -30,6 +30,11 @@ const Navbar = () => {
               </NavLink>
             </li>
             <li>
+              <NavLink to="/blogs" activeClassName="active">
+                Blogs
+              </NavLink>
+            </li>
+            <li>
               <NavLink to="/stats" activeClassName="active">
                 Statistics
               </NavLink>

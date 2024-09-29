@@ -1,44 +1,186 @@
-import React from "react";
+import React, { useContext, useEffect, useState, useCallback } from "react";
 import { FaUserCircle } from "react-icons/fa"; // Placeholder icon for profile picture
 import "./noti.css"; // Import custom CSS for styling
-
-const notifications = [
-  { id: 1, type: "Paper", title: "Paper waste collected", description: "John Doe has reported a paper waste collection.", name: "John Doe", time: "24 Sep 2024 at 9:30 AM" },
-  { id: 2, type: "E-Waste", title: "E-Waste disposal", description: "Jane Smith has submitted an e-waste item for recycling.", name: "Jane Smith", time: "23 Sep 2024 at 10:00 AM" },
-  { id: 3, type: "Plastic", title: "Plastic waste pickup", description: "David Brown requested a plastic waste pickup.", name: "David Brown", time: "22 Sep 2024 at 12:15 PM" },
-  { id: 4, type: "Metal", title: "Metal scrap collection", description: "Michael Johnson reported a metal scrap collection.", name: "Michael Johnson", time: "21 Sep 2024 at 1:30 PM" },
-  { id: 5, type: "Bio", title: "Bio-waste disposal", description: "Sarah White scheduled a bio-waste disposal.", name: "Sarah White", time: "20 Sep 2024 at 3:45 PM" },
-  { id: 6, type: "Plastic", title: "Plastic bottles recycling", description: "Chris Green requested a recycling pickup.", name: "Chris Green", time: "19 Sep 2024 at 11:00 AM" },
-  { id: 7, type: "Paper", title: "Paper waste clearance", description: "Anna Black reported paper waste.", name: "Anna Black", time: "18 Sep 2024 at 9:00 AM" },
-  { id: 8, type: "E-Waste", title: "E-Waste drop-off", description: "David King has an e-waste drop-off scheduled.", name: "David King", time: "17 Sep 2024 at 2:00 PM" },
-  { id: 9, type: "Metal", title: "Metal cans collection", description: "Emily Stone reported metal cans for recycling.", name: "Emily Stone", time: "16 Sep 2024 at 4:00 PM" },
-  { id: 10, type: "Bio", title: "Bio-compost delivery", description: "Lucas White requested bio-compost delivery.", name: "Lucas White", time: "15 Sep 2024 at 5:30 PM" },
-];
+import { AuthContext } from "../contexts/AuthContext";
 
 const NotificationPage = () => {
+  // Retrieve user from local storage and parse it into an object
+  const storedUser = JSON.parse(localStorage.getItem("currentUser"));
+  const { user, setUser } = useContext(AuthContext);
+
+  // Use notifications from the stored user if available
+  const [notifications, setNotifications] = useState(storedUser?.user?.Notifications || []);
+
+  // const fetchVendor = useCallback(async () => {
+  //   try {
+  //     const res = await fetch('http://localhost:8000/api/v1/vendor/getvendor', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       credentials: "include"
+  //     });
+
+  //     if (!res.ok) {
+  //       throw new Error('Failed to fetch vendor data');
+  //     }
+
+  //     const data = await res.json();
+  //     console.log(data);
+  //     setUser({...data});
+  //     localStorage.setItem('currentUser', JSON.stringify(data));
+
+  //     // Update notifications state and user state              `
+  //     // setNotifications([...data.user.Notifications] || []);
+      
+  //     // Update user context and local storage
+      
+      
+
+  //   } catch (error) {
+  //     console.error("Unable to fetch vendor data:", error);
+  //     alert("Unable to fetch notifications");
+  //   }
+  // }, [setUser]); // Removed `notifications` dependency, added `setUser`
+
+/// `notifications` removed from dependencies
+
+  const handleAccept = async (notification) => {
+    let idx = 1;
+    if (notification.category === "PAPER") {
+      idx = 0;
+    }
+    if (notification.category === "METAL") {
+      idx = 1;
+    }
+    if (notification.category === "E-WASTE") {
+      idx = 2;
+    }
+    if (notification.category === "BIO") {
+      idx = 3;
+    }
+    if (notification.category === "PLASTIC") {
+      idx = 4;
+    }
+    
+    let myObject = {
+      user_email: notification.user_email,
+      category: notification.category,
+      RequestId: notification.requestId,
+      weight: notification.weight,
+      user_address: notification.user_address,
+      category_number: idx,
+    };
+
+    try {
+      const res = await fetch('http://localhost:8000/api/v1/vendor/confirmseller', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(myObject),
+        credentials: "include"
+      });
+
+      let data = await res.json();
+      console.log(data);
+      setNotifications([...data.user.Notifications]); // Clear notifications or refetch if needed
+      setUser({user: data.user, type: "Vendor"});
+      localStorage.setItem('currentUser', JSON.stringify(data));
+
+    } catch (error) {
+      console.error("Error accepting notification:", error);
+    }
+  };
+
+  const handleReject = async(notification) => {
+    
+    
+    let myObject = {
+      email: notification.user_email,
+      category: notification.category,
+      RequestId: notification.requestId,
+
+    };
+    console.log(myObject);
+
+    try {
+      const res = await fetch('http://localhost:8000/api/v1/vendor/rejectseller', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(myObject),
+        credentials: "include"
+      });
+
+      let data = await res.json();
+      console.log(data);
+      setNotifications([...data.user.Notifications]); // Clear notifications or refetch if needed
+      setUser({type: "Seller",user: data.user});
+      localStorage.setItem('currentUser', JSON.stringify(data));
+
+    } catch (error) {
+      console.error("Error accepting notification:", error);
+    }
+  };
+
+  // let style={
+  //   backgroundColor:"#7ae77e",
+  //   color:white
+  // }
+
+  
+
   return (
-    <div className="notification-container">
-      {notifications.map((notification) => (
-        <div key={notification.id} className="notification-item">
-          <div className="profile-photo">
-            <FaUserCircle size={40} />
-          </div>
-          <div className="notification-details">
-            <div className="notification-header">
-              <span className={`badge ${notification.type.toLowerCase()}`}>{notification.type}</span>
-              <span className="notification-time">{notification.time}</span>
+
+    (user.type === "Vendor") ?(
+      <div className="notification-container">
+      {notifications.length > 0 ? (
+        notifications.map((notification, index) => (
+          <div key={index} className="notification-item">
+            <div className="profile-photo">
+              <FaUserCircle size={40} />
             </div>
-            <h4 className="notification-title">{notification.name}</h4>
-            
-            <p className="notification-name">{notification.title}</p>
-            <div className="action-buttons">
-              <button className="accept-btn">Accept</button>
-              <button className="reject-btn">Reject</button>
+            <div className="notification-details">
+              <div className="notification-header">
+                <span className={`badge ${notification.category?.toLowerCase()}`}>{notification.category}</span>
+                <span className="notification-time">{notification.date}</span>
+              </div>
+              <h4 className="notification-title">{notification.name} <span style={{ marginLeft: "40px" }}>Contact No.</span> <span style={{ color: "blue" }}>{notification.user_contact}</span></h4>
+              
+              <p className="notification-name">{notification.weight} Kg.</p>
+              <div className="action-buttons">
+                <button className="accept-btn" onClick={() => { handleAccept(notification) }}>Accept</button>
+                <button className="reject-btn" onClick={()=>{handleReject(notification)}}>Reject</button>
+              </div>
             </div>
           </div>
-        </div>
-      ))}
+        ))
+      ) : (
+        <div className="no-notifications">No notifications available</div>
+      )}
     </div>
+    ) : (<div className="notification-container">
+      {notifications.length > 0 ? (
+        notifications.map((notification, index) => (
+          <div key={index} className="notification-item" style={{backgroundColor:notification[0]=="D"?"#7ae77e":"#e95e5e"}}>
+            
+      
+          
+            
+            <div className="notification-details">
+              
+              <h4 className="notification-title">{notification} </h4>
+              
+            </div>
+          </div>
+        ))
+      ) : (
+        <div className="no-notifications">No notifications available</div>
+      )}
+    </div>)
+    
   );
 };
 

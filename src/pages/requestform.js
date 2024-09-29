@@ -1,28 +1,71 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import './requestform.css'; // Make sure to import the CSS file
+import { useParams } from 'react-router-dom';
+import { AuthContext } from '../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const WasteCollectionForm = () => {
+  const {user} = useContext(AuthContext)
+  const {wasteTypeNo} = useParams();
+  const navigate = useNavigate();
+
+  const catenum = Number( wasteTypeNo[wasteTypeNo.length-1])
+  const vendorEmail=wasteTypeNo.slice(0,wasteTypeNo.length-1)
+  // const waste = wasteTypeNo
+let category = 1
+  if(catenum===1){
+    category = "PAPER"
+}
+if(catenum===2){
+  category = "METAL"
+}
+if(catenum===3){
+category = "E-WASTE"
+}
+if(catenum===4){
+category = "BIO"
+}
+if(catenum===5){
+category = "PLASTIC"
+}
+
+
   const [formData, setFormData] = useState({
-    firstName: '',
+    firstName: user.user.name,
     
-    email: '',
-    phone: '',
-    weight: '',
-    timeSlot: '',
+    email: user.user.email,
+    phone: user.user.contact,
+    weight: "",
+    date: '',
    
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
+    let myObject = {...formData, vendor_email:vendorEmail, category}
+
+    try {
+      const res = await fetch('http://localhost:8000/api/v1/seller/requesttovendor',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            },
+          body: JSON.stringify(myObject),
+          credentials: "include"
+        }
+      )
+
+      let data = await res.json();
+      console.log(data);
+      navigate("/waste");
+      
+    } catch (error) {
+       alert(error);
+       navigate("/waste")
+    }
+    console.log('Form submitted:', myObject);
   };
 
   return (
@@ -37,10 +80,10 @@ const WasteCollectionForm = () => {
           type="text"
           id="firstName"
           name="firstName"
-
+          readOnly
           required
           value={formData.firstName}
-          onChange={handleChange}
+          // onChange={handleChange}
         />
       </div>
 
@@ -51,10 +94,10 @@ const WasteCollectionForm = () => {
           type="email"
           id="email"
           name="email"
-         
+          readOnly
           required
           value={formData.email}
-          onChange={handleChange}
+          // onChange={handleChange}
         />
       </div>
 
@@ -64,10 +107,10 @@ const WasteCollectionForm = () => {
           type="tel"
           id="phone"
           name="phone"
-          
+          readOnly
           required
           value={formData.phone}
-          onChange={handleChange}
+          // onChange={handleChange}
         />
       </div>
 
@@ -80,20 +123,29 @@ const WasteCollectionForm = () => {
          
           required
           value={formData.weight}
-          onChange={handleChange}
+          onChange={(e)=>{ 
+            let currentWeight = e.target.value;
+            let newObject = {...formData, weight: currentWeight}
+            setFormData(newObject);
+
+          }}
         />
       </div>
 
       <div className="form-group">
-        <label htmlFor="timeSlot">Preferred Time Slot*</label>
+        <label htmlFor="timeSlot">Preferred Date*</label>
         <input className='req-inp'
-          type="text"
+          type="date"
           id="timeSlot"
           name="timeSlot"
           placeholder="E.g. 10:00 AM - 12:00 PM"
           required
-          value={formData.timeSlot}
-          onChange={handleChange}
+          value={formData.date}
+          onChange={(e)=>{
+            let currentDate = e.target.value;
+            let newObject = {...formData, date: currentDate};
+            setFormData(newObject)
+          }}
         />
       </div>
 

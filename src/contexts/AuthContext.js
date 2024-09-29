@@ -1,29 +1,61 @@
 import React, { createContext, useState, useEffect } from "react";
 import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useResolvedPath } from "react-router-dom";
 
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [user, setUser] = useState(null);
+
+  const [isLoggedIn, setIsLoggedIn] = useState(!!Cookies.get("accesstoken"));
+  let myUser = localStorage.getItem("currentUser");
+ 
+  const [user, setUser] = useState(JSON.parse(myUser));
+  
+  
+
+
+  const fetchData = async()=>{
+    try {
+      console.log("auth effect executing");
+      const res = await fetch('http://localhost:8000/api/v1/vendor/getvendor',{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        }, 
+        credentials: "include"
+      })
+
+      const data = await res.json();
+
+      setUser({...data})
+    
+      
+      setIsLoggedIn(true)
+      console.log(isLoggedIn);
+
+    } catch (error) {
+         console.log(error)
+    }
+  }
 
   useEffect(() => {
     const accessToken = Cookies.get("accesstoken");
     const refreshToken = Cookies.get("refreshtoken");
-
+    console.log(accessToken);
     if (accessToken && refreshToken) {
       // Fetch user data or validate tokens here if needed
-      const myUser = localStorage.getItem("currentUser");
-      console.log(myUser);
-      
+
       setIsLoggedIn(true);
-      setUser(JSON.parse(myUser)); // Make sure to parse the stored user data
+      
     } else {
       setIsLoggedIn(false);
       setUser(null);
     }
   },[]);
+
+
+
+
 
   const signup = async (User) => {
     console.log(User);
@@ -51,17 +83,17 @@ const AuthProvider = ({ children }) => {
         console.log(data);
         
         setIsLoggedIn(true);
-        setUser(User);
-        localStorage.setItem("currentUser", JSON.stringify(User));
+        setUser(data);
+        localStorage.setItem("currentUser", JSON.stringify(data));
 
-        return true; // Return true if signup is successful
+        return true; 
       } else {
         console.log("Failed to sign up:", res.status);
-        return false; // Return false if signup fails
+        return false; 
       }
     } catch (err) {
       console.log("Error:", err);
-      return false; // Return false if an error occurs
+      return false; 
     }
   };
 
@@ -90,8 +122,8 @@ const AuthProvider = ({ children }) => {
         const data = await res.json();
         console.log(data);
         setIsLoggedIn(true);
-        setUser(data.user);
-        localStorage.setItem("currentUser", JSON.stringify(User));
+        setUser(data);
+        localStorage.setItem("currentUser", JSON.stringify(data));
         return true;
       } else{
         return false;

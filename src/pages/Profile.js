@@ -3,7 +3,7 @@ import './Profile.css'
 import { AuthContext } from '../contexts/AuthContext';
 
 const Profile = () => {
-
+    const {user} = useContext(AuthContext);
 
     const {logout} = useContext(AuthContext);
   return (
@@ -16,54 +16,38 @@ const Profile = () => {
             <div class="profile-info">
                 <div className='img-name'>
                      <div class="profile-img"/>
-                     <div className='main-info'>
-                         <h1>Shreyas Raijade</h1>
-                         <p>Advisor and Consultant at MicroSoft Inc.</p>
-                     </div>                    
-                </div>
-                
-                <div class="social-links">
-                    <a href="#">shreyas-raijade02</a>
-                    <a href="#">shreyas.raijade</a>
-                    <a href="#">shreyas_raijade</a>
-                </div>
-            </div>    
-            
-        </div>
+                         <div className='main-info'>
+                             <h1>{user.user.name}</h1>
+                             <p>{user.type}</p>
+                         </div>                    
+                     </div>
+                </div>  
+                           
+            </div>
+             
 
 
-        <div className='extra-info'>
+      
 
             <div className='left-bar'>
                 <div class="contact-info">
-                    <p><strong>Office:</strong> +7911 0189830</p>
-                    <p><strong>Mobile:</strong> +7404 1414777</p>
-                    <p><strong>Email:</strong> shreyas.raijade@gmail.com</p>
+                    <p><strong>Mobile:</strong> {user.user.contact}</p>
+                    <p><strong>Email:</strong> {user.user.email}</p>
                 </div>
-                <div class="rating">
-                    <p>4.5 <span>★</span> (133 reviews)</p>
+                <div className='mybuts'>
+                   <button class="chat-button">Edit</button>
+                   <button class="chat-button" onClick={()=>{ logout() }}>Logout</button>
                 </div>
-                <button class="chat-button">Edit</button>
-                <button class="chat-button" onClick={()=>{ logout() }}>Logout</button>
-            </div>
-
-        <div class="cards-container">
-            <div class="card">
-                <h2>Introduction</h2>
-
-            </div>
-            <div class="card">
-                <h2>Loan Calculator</h2>
-
+                
             </div>
             
-        </div>
+     
         </div>
 
        
     </div>
       
-    </div>
+    
   );
 };
 

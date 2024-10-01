@@ -1,15 +1,20 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import React from "react";
 import "./blog.css";
 import { Modal, Box, Typography, TextField, Button } from "@mui/material";
+import { AuthContext } from "../contexts/AuthContext";
 
 function Blog() {
-  let blogdata = localStorage.getItem("blogs");
-  const arr = JSON.parse(blogdata).arrblogs;
-  const [blogArray, setBlogArray] = useState([...arr]);
+  // console.log(("Inside Component"));
+  // let blogdata = localStorage.getItem("blogs");
+  // console.log(blogdata);
+  // const arr = JSON.parse(blogdata)?.arrblogs;
+  const {user} = useContext(AuthContext);
+  const [blogArray, setBlogArray] = useState([]);
 
   const fetchBlogs = async () => {
     try {
+      console.log(("Inside Fetch"));
       const res = await fetch("http://localhost:8000/api/v1/seller/blogs", {
         method: "POST",
         headers: {
@@ -19,15 +24,22 @@ function Blog() {
       });
 
       const data = await res.json();
-      console.log(data);
+      setBlogArray([...data.arrblogs])
 
       localStorage.setItem("blogs", JSON.stringify(data));
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
     fetchBlogs();
   }, []);
+
+
+
+
+
 
   const style = {
     position: "absolute",
@@ -45,12 +57,39 @@ function Blog() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
-  const handleAddBlog = () => {
+  const handleAddBlog = async() => {
+    handleClose();
     if (title && description) {
       console.log("Blog Added:", { title, description });
+      try {
+        let currentUser = ''
+        if(user.type === 'Vendor'){
+            currentUser = 'vendor'
+        } else{
+          currentUser = 'seller'
+        }
+        const res = await fetch(`http://localhost:8000/api/v1/${currentUser}/add-blog`,{
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ title, description }),
+          credentials: "include"
+        })
+
+        const data = await res.json();
+        console.log(data);
+        let existing = [...blogArray];
+
+        setBlogArray([data.blog, ...existing]);
+        console.log(blogArray);
+      } catch (error) {
+          console.log(error);
+      }
       setTitle("");
       setDescription("");
-      handleClose();
+      
+     
     } else {
       alert("Please fill out all fields");
     }
@@ -102,9 +141,9 @@ function Blog() {
             color="primary"
             onClick={handleAddBlog}
             sx={{
-              bgcolor: "#1976d2",
+              bgcolor: "#f56a58",
               "&:hover": {
-                bgcolor: "#155a9c",
+                bgcolor: "#ff3b22",
               },
               padding: "10px 20px",
               borderRadius: "5px",
@@ -116,19 +155,20 @@ function Blog() {
       </Modal>
       <div className="cards">
         <button className="blogButton" onClick={handleOpen}>
-          Add Blog
+          Add Your Blog
         </button>
 
         {blogArray.map((blog)=>{
             return(<div className="card-container">
-                <div className="card-content">
-                  <h2 className="card-title">{blog.title}</h2>
-                  <p className="card-description">{blog.description}</p>
-                  <div className="card-email">
-                    Email: <a href={`#`}>{blog.user_email}</a>
-                  </div>
+              <div className="card-content">
+                <h2 className="card-title">{blog.title}</h2>
+                <p className="card-description">{blog.description}</p>
+                <div className="card-email">
+                  Email: <a href={`#`}>{blog.user_email}</a>
                 </div>
-              </div>)
+              </div>
+            </div>
+            )
         })}
         
       </div>

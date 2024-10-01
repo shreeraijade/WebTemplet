@@ -23,12 +23,13 @@
   }
   
   .navbar-links {
-    color: #385a66;
+    color: #385a6600;
     list-style: none;
     display: flex;
     font-size: large;
-    gap: 75px;
+    gap: 40px;
     align-items: center;
+    margin-bottom: 10px;
   }
   .guest-buttons{
     background-color: #f56a58;
@@ -41,22 +42,34 @@
     padding: 5px 10px;
     transition: color 0.3s ease, background-color 0.3s ease;
     border-radius: 4px;
+   
+  }
+
+  .guest-links{
+    display: flex;
+    gap:  20px;
+    list-style: none;
+
   }
 
   .guest-links a{
     color: white;
+    
   }
   
   .navbar-links a:hover {
-    color: var(--secondary-color);
+    color:  #f56a58;
     background-color: var(--highlight-color);   
   }
 
+ 
+
   
   .navbar-links a.active{
-    color: black;
-    background-color: white; 
+    color: rgb(255, 255, 255);
+    background-color: #f56a58; 
   }
+  
   
   .navbar-links button {
     background: none;
@@ -78,12 +91,12 @@
   @media (max-width: 768px) {
     .navbar-links {
       flex-direction: column;
-      gap: 10px;
-      background-color: var(--primary-color);
+      gap: 20px;
+      
       position: absolute;
       top: 60px;
       right: 0;
-      width: 200px;
+      width: 400px;
       padding: 10px 0;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       display: none;
@@ -91,6 +104,7 @@
   
     .navbar-links.active {
       display: flex;
+      background-color: #bfbfbf00;
     }
   
     .navbar-links button {
@@ -99,4 +113,48 @@
       padding: 10px 20px;
     }
   }
-  
+
+
+
+  /* Existing styles */
+
+/* Existing styles */
+
+.navbar-toggle {
+  display: none; /* Hide toggle button by default */
+  background-color: #bfbfbf00;
+  border: none;
+  color: var(--secondary-color);
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* Show toggle button on smaller screens */
+@media (max-width: 768px) {
+  .navbar-toggle {
+    display: block; /* Show toggle button */
+  }
+
+  .navbar-links {
+    display: none; /* Hide links by default */
+  }
+
+  .navbar-links.active {
+    display: flex; /* Show links when active */
+    flex-direction: column;
+    gap: 20px;
+    background-color: #fff4f4f9;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    width: 200px;
+    padding: 20px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+  }
+
+  .guest-links {
+    display: flex; /* Ensure guest links are displayed */
+    flex-direction: column; /* Stack guest links vertically */
+  }
+}

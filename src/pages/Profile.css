@@ -1,7 +1,7 @@
 .profile-body{
     width: 100%;
     color: black;
-    height: 80vh;
+    height: 110vh;
     display: flex;
 
 }
@@ -15,18 +15,18 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     overflow: hidden;
-    height: max-content
+    height: 100vh;
 }
 
 .header {
     position: relative;   
     color: white;
-    height: 60vh;
+    height: 50vh;
 }
 
 .background-img {
     width: 100%;
-    height: 300px;
+    height: 250px;
     background-image: url('C:\Users\Shreyas\OneDrive\Desktop\Auth\navbar\public\clouds_grass_field_trees_blue_sky_nature_wallpaper_background_4k_hd_nature.jpg');
     background-repeat: no-repeat;
     background-size: cover;
@@ -37,7 +37,7 @@
     flex-direction: column;
     align-items: center;
     position: relative;
-    top: 40px
+    top: 10px
 }
 
 .main-info{
@@ -48,7 +48,7 @@
 
 .profile-info {
     position: absolute;
-    top: 50%;
+    top: 60%;
     left: 50%;
     transform: translate(-50%, -50%);
     display: flex;
@@ -74,19 +74,9 @@ h1 {
 p {
     margin: 5px 0;
 }
-.social-links{
-    width: 800px;
-    display: flex;
-    justify-content: space-around;
-    margin-top: 80px
-}
 
-.social-links a {
-    display: inline-block;
-    margin-right: 10px;
-    color: rgb(0, 0, 0);
-    text-decoration: none;
-}
+
+
 
 .contact-info p {
     margin: 5px 0;
@@ -152,6 +142,30 @@ p {
     padding: 10px 20px;
     cursor: pointer;
     border-radius: 5px;
+}
+
+
+.rank{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+
+.rank p{
+    color: #f56a58;
+    font-size: 50px;
+    font-weight: bold;
+}
+
+
+.rank-tag{
+    color: #f56a58;
+    font-size: 50px;
+    font-weight: bold;
 }
 
 

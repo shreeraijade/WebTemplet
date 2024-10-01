@@ -125,10 +125,10 @@ const NotificationPage = () => {
     }
   };
 
-  // let style={
-  //   backgroundColor:"#7ae77e",
-  //   color:white
-  // }
+
+  const deleteNotification = async(notification)=>{
+
+  }
 
   
 
@@ -164,17 +164,24 @@ const NotificationPage = () => {
     ) : (<div className="notification-container">
       {notifications.length > 0 ? (
         notifications.map((notification, index) => (
-          <div key={index} className="notification-item" style={{backgroundColor:notification[0]=="D"?"#7ae77e":"#e95e5e"}}>
-            
-      
-          
-            
-            <div className="notification-details">
-              
-              <h4 className="notification-title">{notification} </h4>
-              
-            </div>
-          </div>
+          <div
+  key={index}
+  className="notification-item"
+  style={{ backgroundColor: notification[0] === "D" ? "#7ae77e" : "#e95e5e" }}
+>
+  <div className="notification-details">
+    <button 
+    className="notification-close-btn" 
+    style={{ backgroundColor: notification[0] === "D" ? "#7ae77e" : "#e95e5e" }}
+    onClick={()=>{
+      deleteNotification(notification)
+    }}
+    >X</button>
+    <h4 className="notification-title">{notification}</h4>
+  </div>
+</div>
+
+
         ))
       ) : (
         <div className="no-notifications">No notifications available</div>

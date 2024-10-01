@@ -41,7 +41,7 @@ if(wasteType==="PLASTIC"){
   return (
     <div className="vendor-body">
     <div className="vendor-container">
-      {filteredVendors.length > 0 ? (
+      {filteredVendors?.length > 0 ? (
         filteredVendors.map((vendor) => (
           <div key={vendor._id} className="vendor-item">
             <div className="profile-photo">

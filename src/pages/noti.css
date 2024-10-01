@@ -16,7 +16,40 @@
     border-radius: 8px;
     margin-bottom: 15px;
     align-items: center;
+    position: relative;
+    transition: all 0.3s ease;
   }
+
+  /* .notification-item {
+    position: relative;
+    padding: 16px;
+    transition: all 0.3s ease;
+  } */
+  
+
+  
+  .notification-details {
+    position: relative;
+  }
+  
+  .notification-close-btn {
+    position: absolute;
+    top: 1px;
+    right: 2px;  
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    display: none;
+  }
+  
+  .notification-item:hover .notification-close-btn {
+    display: block;
+  }
+  
+  
   
   .profile-photo {
     margin-right: 15px;

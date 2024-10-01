@@ -1,45 +1,105 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
+import { AuthContext } from "../contexts/AuthContext";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const WasteBarCharts = () => {
-  // Sample data for waste categories
-  const wasteCategories = ["Paper", "E-Waste", "Metal", "Bio", "Plastic"];
-  const moneySpent = [300, 200, 500, 700, 400]; // Example values for money spent
-  const wasteWeight = [450, 300, 650, 500, 300]; // Example values for weight
+  const { user } = useContext(AuthContext);
+  console.log(user);
+  // const [moneyTag, setMoneyTeg] = useState("")
+  let scoreArray = []
 
-  // Data for money spent graph
-  const moneyData = {
-    labels: wasteCategories,
-    datasets: [
-      {
-        label: "Money Spent",
-        data: moneySpent,
-        backgroundColor: ["#FF4C4C", "#FF2E2E", "#FF1C1C", "#FF0F0F", "#8B0000"], // Color palette
-      },
-    ],
-  };
+  if(user.type==="Vendor"){
+    scoreArray = user?.user?.Total_Garbage ? [...user.user.Total_Garbage] : []
+  } else{
+    scoreArray = user?.user?.scores ? [...user.user.scores] : []
+  }
+  
+  const [score, setScore] = useState(scoreArray);
+  let moneyTag = "";
+  
+  if(user.type === "Vendor"){
+    moneyTag = "Money Spent"
+  } else{
+    moneyTag = "Money Earned"
+  }
 
-  // Data for weight graph
-  const weightData = {
-    labels: wasteCategories,
-    datasets: [
-      {
-        label: "Waste Weight",
-        data: wasteWeight,
-        backgroundColor: ["#FF4C4C", "#FF2E2E", "#FF1C1C", "#FF0F0F", "#8B0000"], // Color palette
-      },
-    ],
-  };
+  if (!user) {
+    // If user data is not yet available, return a loader or null
+    return <div>Loading...</div>;
+  }
 
-  // Chart options
+  const wasteCategories = ["Paper",  "Metal", "E-Waste", "Bio", "Plastic"];
+  
+  const defaultMoney = [300, 200, 500, 700, 400];
+  const defaultWeight = [450, 300, 650, 500, 300];
+
+  let moneyData = {};
+  let weightData = {};
+
+  if (user.type === "Vendor") {
+    moneyData = {
+      labels: wasteCategories,
+      datasets: [
+        {
+          label: "Money Spent",
+          data: defaultMoney,
+          backgroundColor: ["#f44336", "#9c27b0", "#ff9800", "#4caf50", "#03a9f4"],
+        },
+      ],
+    };
+
+
+    
+
+    
+
+    
+    
+    
+
+
+    weightData = {
+      labels: wasteCategories,
+      datasets: [
+        {
+          label: "Waste Weight",
+          data: score,
+          backgroundColor: ["#f44336", "#9c27b0", "#ff9800", "#4caf50", "#03a9f4"],
+        },
+      ],
+    };
+  } else {
+    moneyData = {
+      labels: wasteCategories,
+      datasets: [
+        {
+          label: "Money Earned",
+          data: score,
+          backgroundColor: ["#f44336", "#9c27b0", "#ff9800", "#4caf50", "#03a9f4"],
+        },
+      ],
+    };
+
+    weightData = {
+      labels: wasteCategories,
+      datasets: [
+        {
+          label: "Waste Weight",
+          data: defaultWeight,
+          backgroundColor: ["#f44336", "#9c27b0", "#ff9800", "#4caf50", "#03a9f4"],
+        },
+      ],
+    };
+  }
+
   const options = {
     responsive: true,
     plugins: {
       legend: {
-        display: false, // Hide the legend
+        display: false,
       },
     },
     scales: {
@@ -50,9 +110,17 @@ const WasteBarCharts = () => {
   };
 
   return (
-    <div style={{height:"80vh", display: "flex", justifyContent: "space-around", alignItems: "center", padding: "20px" }}>
+    <div
+      style={{
+        height: "80vh",
+        display: "flex",
+        justifyContent: "space-around",
+        alignItems: "center",
+        padding: "20px",
+      }}
+    >
       <div style={{ width: "45%" }}>
-        <h3 style={{ textAlign: "center" }}>Money Spent</h3>
+        <h3 style={{ textAlign: "center" }}>{moneyTag}</h3>
         <Bar data={moneyData} options={options} />
       </div>
       <div style={{ width: "45%" }}>

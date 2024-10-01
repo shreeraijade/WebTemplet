@@ -2,9 +2,9 @@
 .card-container {
     width: 50%;
     border: 1px solid #ddd;
-    border-radius: 8px;
+    border-radius: 1px;
     padding: 16px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1);
     background-color: #fff;
     transition: transform 0.2s ease-in-out;
     margin-bottom: 10px;
@@ -12,7 +12,14 @@
 
   .blogButton{
     margin-bottom: 10px;
+    padding: 10px;
+    background-color: #f56a58;
+    color: white;
+    border: none;
   }
+
+
+  
 
 
   .cards{
@@ -20,7 +27,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: rgb(239, 239, 239);
+    background-color: rgb(255, 255, 255);
     padding-top: 10px;
   }
   
@@ -59,5 +66,12 @@
   
   .card-email a:hover {
     text-decoration: underline;
+  }
+
+
+  @media (max-width: 768px){
+    .card-container{
+      width: 80%;
+    }
   }
   
